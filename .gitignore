@@ -1,0 +1,11 @@
+*.o
+*.swp
+*.core
+tags
+cscope.*out
+cmake-build-debug/
+build/
+*.lib
+*.a
+*.la
+*.lo
