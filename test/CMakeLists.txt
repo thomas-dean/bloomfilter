@@ -6,3 +6,9 @@ add_executable (runUnitTests
 target_link_libraries (runUnitTests
     bloom
 )
+add_executable (runPerfTests
+    bloom_perf.c
+)
+target_link_libraries (runPerfTests
+    bloom
+)
