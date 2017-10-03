@@ -11,20 +11,20 @@ static int simple_test(void)
 {
     struct bloom bloom;
 
-    assert(bloom_init(&bloom, BLOOM_SIZE, -1) == 1);                   /* Should fail */
-    assert(bloom_add(&bloom, "Hello world!", 12) == -1);   /* Should fail */
-    assert(bloom_check(&bloom, "Hello world!", 12) == -1); /* Should fail */
+    assert(bloom_init(&bloom, BLOOM_SIZE, -1) == 1);
+    assert(bloom_add(&bloom, "Hello world!", 12) == -1);
+    assert(bloom_check(&bloom, "Hello world!", 12) == -1);
     assert(bloom_init(&bloom, BLOOM_SIZE, 0.01) == 0);
     assert(bloom_check(&bloom, "Hello world!", 12) == 0);
     assert(bloom_add(&bloom, "Hello world!", 12) == 0);
     assert(bloom_add(&bloom, "Hello world!", 12) == 1);
     assert(bloom_check(&bloom, "Hello world!", 12) == 1);
     bloom_free(&bloom);
-    assert(bloom_add(&bloom, "Hello world!", 12) == -1);   /* Should fail */
-    assert(bloom_check(&bloom, "Hello world!", 12) == -1); /* Should fail */
-    assert(bloom_init(&bloom, BLOOM_SIZE, 1.00) == 1);                 /* Should fail */
-    assert(bloom_init(&bloom, BLOOM_SIZE, 0.00) == 1);                 /* Should fail */
-    assert(bloom_init(&bloom, BLOOM_SIZE, 0.50) == 0);                 /* Can reinitialize */
+    assert(bloom_add(&bloom, "Hello world!", 12) == -1);
+    assert(bloom_check(&bloom, "Hello world!", 12) == -1);
+    assert(bloom_init(&bloom, BLOOM_SIZE, 1.00) == 1);
+    assert(bloom_init(&bloom, BLOOM_SIZE, 0.00) == 1);
+    assert(bloom_init(&bloom, BLOOM_SIZE, 0.50) == 0);
     bloom_free(&bloom);
 
     return 0;
