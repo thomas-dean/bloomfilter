@@ -59,9 +59,16 @@ int bloom_add(struct bloom *bloom, const void *element, size_t len)
     b = hash32_buf(element, len, a);
     for (i = 0; i < bloom->hashes; i++) {
         x = (a + i * b) % bloom->bits;
-        if (__sync_fetch_and_or(bloom->bf + (x >> 3), x & 7)) {
+#ifdef THREAD_SAFE
+        if (__sync_fetch_and_or(bloom->bf + (x >> 3), (uint8_t)(1 << (x & 7)))) {
             hits++;
         }
+#else
+        if (*(bloom->bf + (x >> 3)) & (1 << (x & 7))) {
+            hits++;
+        }
+        *(bloom->bf + (x >> 3)) |= (1 << (x & 7));
+#endif
     }
 
     if (hits == bloom->hashes) {
@@ -85,7 +92,7 @@ int bloom_check(struct bloom *bloom, const void *element, size_t len)
     b = hash32_buf(element, len, a);
     for (i = 0; i < bloom->hashes; i++) {
         x = (a + i * b) % bloom->bits;
-        if (*(bloom->bf + (x >> 3)) & (x & 7)) {
+        if (*(bloom->bf + (x >> 3)) & (1 << (x & 7))) {
             hits++;
         } else {
             return 0;
