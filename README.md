@@ -21,7 +21,7 @@ char mystring[] = "Hello, world!";
 char myotherstring[] = "Goodbye, world!";
 int mynumber = 42;
 
-bloom_init(&bloom); /* Initialize the bloom filter */
+bloom_init(&bloom, 10000, 1e-6); /* Initialize the bloom filter */
 
 /* Add some stuff to the bloom filter */
 bloom_add(&bloom, mystring, sizeof(mystring));
