@@ -3,12 +3,46 @@ libbloom
 
 A cache efficient, thread safe bloom filter library written in C.
 
+Usage
+-----
+
+libbloom shares the same API as that of [the other
+libbloom](https://github.com/jvirkki/libbloom). However, this is subject to
+change since the library is undergoing early development.
+
+### Example Usage
+
+```c
+#include "bloom.h"
+
+struct bloom bloom;
+
+char mystring[] = "Hello, world!";
+char myotherstring[] = "Goodbye, world!";
+int mynumber = 42;
+
+bloom_init(&bloom); /* Initialize the bloom filter */
+
+/* Add some stuff to the bloom filter */
+bloom_add(&bloom, mystring, sizeof(mystring));
+bloom_add(&bloom, myotherstring, sizeof(myotherstring));
+bloom_add(&bloom, mynumber, sizeof(mynumber));
+
+/* Check if something is in the bloom filter */
+if (bloom_check(&bloom, myotherstring, sizeof(myotherstring))) {
+    printf("\"%s\" is in the bloom filter!\n", myotherstring);
+}
+
+/* Release the resources used by the bloom filter */
+bloom_free(&bloom);
+```
+
 Buliding
 --------
 
 Requirements:
 
-* Linux / Unix Operating System
+* FreeBSD Operating System (version 6.1 or above)
 * cmake version 3.8 or greater
 
 Build steps:
